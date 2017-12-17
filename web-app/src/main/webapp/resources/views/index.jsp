@@ -20,14 +20,19 @@
 </div>
 
 <div id="loginbox">
+    <span style="float: right">
+        <a href="?lang-en">en</a>
+        <a href="?lang-ua">ua</a>
+    </span>
+
     <form:form commandName="user" action="/signin" cssClass="login_form" method="post">
         <fieldset>
             <p>
-                <form:label path="login">Login or email</form:label>
+                <form:label path="login"><spring:message code="Login or email"/></form:label>
                 <form:input type="text" id="login" path='login' placeholder="login or email"/>
             </p>
             <p>
-                <form:label path="password">Password</form:label>
+                <form:label path="password"><spring:message code="Password"/></form:label>
                 <form:input type="password" id="password" path='password' placeholder="Password"/>
             </p>
         </fieldset>
@@ -41,7 +46,7 @@
         <div class="col-md-12 control">
             <div style="border-top: 1px solid#876354; padding-top:15px; font-size:85%">
                 Don't have an account!
-                <a href="<c:url value="/resources/views/signup.jsp"/>"> Sign Up Here </a>
+                <a href="<c:url value="/resources/views/signup.jsp"/>"><spring:message code="Sign Up Here"/></a>
             </div>
         </div>
     </div>
