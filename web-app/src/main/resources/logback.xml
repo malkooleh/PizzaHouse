@@ -15,9 +15,11 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="org.springframework" level="info"/>
+    <logger name="org.springframework" level="info">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
-    <root level="debug">
+    <root level="warning">
         <appender-ref ref="STDOUT" />
     </root>
 
