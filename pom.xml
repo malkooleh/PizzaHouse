@@ -57,6 +57,7 @@
 
     <properties>
         <spring.version>4.3.12.RELEASE</spring.version>
+        <spring.sequrity>4.2.3.RELEASE</spring.sequrity>
         <jdk.version>1.8</jdk.version>
         <hibernate-version>5.2.1.Final</hibernate-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -132,7 +133,17 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>4.2.3.RELEASE</version>
+            <version>${spring.sequrity}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.sequrity}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.sequrity}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
