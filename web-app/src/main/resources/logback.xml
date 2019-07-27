@@ -12,15 +12,15 @@
 
     <logger name="ua.pizzeria" level="debug"
             additivity="false">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="org.springframework" level="info">
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <root level="warning">
-        <appender-ref ref="STDOUT" />
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
     </root>
 
 </configuration>

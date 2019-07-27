@@ -1,9 +1,8 @@
 package ua.pizzeria.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import ua.pizzeria.model.Category;
 import ua.pizzeria.model.User;
@@ -12,7 +11,7 @@ import ua.pizzeria.services.UserService;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class AppController {
 
     private static final String ATTRIBUTE_MODEL_TO_VIEW = "categoryList";
