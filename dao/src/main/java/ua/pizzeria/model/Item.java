@@ -1,6 +1,7 @@
 package ua.pizzeria.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "items")
@@ -13,8 +14,8 @@ public class Item {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "unitPrice")
-    private double unitPrice;
+    @Column(name = "unit_price")
+    private BigDecimal unitPrice;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -36,11 +37,11 @@ public class Item {
         this.id = id;
     }
 
-    public double getUnitPrice() {
+    public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
 

@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <property name="LOG_LOCATION" value="./log"/>
+    <property name="ARCHIVE" value="./log/arc_log"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_LOCATION}/debug.log</File>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ARCHIVE}/debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>5MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB,
+				it will delete old archived file -->
+            <totalSizeCap>100MB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+    </appender>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
@@ -10,8 +32,7 @@
         </layout>
     </appender>
 
-    <logger name="ua.pizzeria" level="debug"
-            additivity="false">
+    <logger name="ua.pizzeria" level="debug" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 
@@ -21,6 +42,7 @@
 
     <root level="debug">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>

@@ -2,6 +2,8 @@ package ua.pizzeria.dto;
 
 import ua.pizzeria.model.Item;
 
+import java.math.BigDecimal;
+
 public class CartItem {
 
     private Item item;
@@ -13,8 +15,8 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public double getSubTotal() {
-        return item.getUnitPrice() * quantity;
+    public BigDecimal getSubTotal() {
+        return item.getUnitPrice().multiply(BigDecimal.valueOf(quantity));
     }
 
     public Item getItem() {
