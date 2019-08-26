@@ -1,11 +1,14 @@
 package ua.pizzeria.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Data
 public class User {
 
     @Id
@@ -19,7 +22,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "createdDay")
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "creation_day")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDay;
 
@@ -50,6 +56,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getCreatedDay() {

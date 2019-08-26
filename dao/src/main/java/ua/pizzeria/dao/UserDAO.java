@@ -7,7 +7,7 @@ import ua.pizzeria.model.User;
 @Repository
 public interface UserDAO extends CrudRepository<User, Integer> {
 
-    User getByLogin(String login);
+    User findByLogin(String login);
 
     @Override
     void deleteById(Integer integer);

@@ -1,6 +1,7 @@
 package ua.pizzeria.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "orderline")
@@ -17,8 +18,8 @@ public class OrderLine {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    public double getTotalPrice() {
-        return item.getUnitPrice() * quantity;
+    public BigDecimal getTotalPrice() {
+        return item.getUnitPrice().multiply(BigDecimal.valueOf(quantity));
     }
 
     public int getId() {

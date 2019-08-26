@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style_index.css}"/>
+</head>
+<body>
+<p1>Catalog</p1>
+<p>
+<div>
+    <table>
+        <tr>
+            <th>Name</th>
+        </tr>
+        <tr th:each="category : ${categoryList}">
+            <td th:utext="${category.name}">...</td>
+        </tr>
+    </table>
+</div>
+<ul>
+    <li th:each="category : ${categoryList}">
+        <a th:href="@{/items/(id=${category.id})}"><span th:text="${category.name}"></span></a>
+    </li>
+    <a th:href="@{/items}">Show all</a>
+</ul>
+</body>
+</html>

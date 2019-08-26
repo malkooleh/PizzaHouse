@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ua.pizzeria.model.Item;
 import ua.pizzeria.services.ItemService;
 
@@ -19,7 +16,7 @@ public class ItemsController {
     @Qualifier("itemServiceImpl")
     private ItemService itemService;
 
-    @RequestMapping(value = "items", method = RequestMethod.GET)
+    @GetMapping(value = "items")
     public String viewItems(Model model) {
 
         model.addAttribute("item", new Item());

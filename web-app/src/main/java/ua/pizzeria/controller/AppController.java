@@ -1,61 +1,80 @@
 package ua.pizzeria.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import ua.pizzeria.model.Category;
 import ua.pizzeria.model.User;
 import ua.pizzeria.services.CategoryService;
 import ua.pizzeria.services.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@Controller
+@RequestMapping("/")
 public class AppController {
 
     private static final String ATTRIBUTE_MODEL_TO_VIEW = "categoryList";
     private static final String PAGE_ERROR = "redirect:/index";
+    private static final String LOGIN_VIEW = "login";
+    private static final String LOGOUT_VIEW = "logout";
 
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView home(){
-        return new ModelAndView("index", "user", new User());
+    @GetMapping(value = {"", "index"})
+    public String index(Model model) {
+        model.addAttribute("loginForm", new LoginForm());
+        return LOGIN_VIEW;
     }
 
-    @RequestMapping(value = "signin", method = RequestMethod.POST)
-    public String signIn(@ModelAttribute("user") User user) {
-        User profile;
-        profile = userService.getByLogin(user.getLogin());
-        if (profile == null) {
-            return "index";
-        } else if (!profile.getPassword().equals(user.getPassword())) {
-            return "index";
+    @PostMapping(value = "login")
+    public String signIn(@Valid @ModelAttribute("loginForm") LoginForm form,
+                         BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            User profile = userService.getByLogin(form.getLogin());
+
+            if (profile == null || !profile.getPassword().equals(form.getPassword())) {
+                return LOGIN_VIEW;
+            }
+        } else {
+            return LOGIN_VIEW;
         }
+
         return "home";
     }
 
-    @RequestMapping(value = "signup", method = RequestMethod.POST)
-    public String signUp(@PathVariable String login,@PathVariable String password){
+    @GetMapping("logout")
+    public String showSignUp(Model model) {
+        model.addAttribute("form", new LoginForm());
+        return LOGOUT_VIEW;
+    }
+
+    @PostMapping(value = "logout")
+    public String signUp(@Valid @ModelAttribute("loginForm") LoginForm form,
+                         BindingResult bindingResult) {
+            //@PathVariable String login, @PathVariable String password, @PathVariable String email) {
         User newUser;
         User profile;
-        profile = userService.getByLogin(login);
+        profile = userService.getByLogin(form.getLogin());
         if (profile == null) {
             newUser = new User();
-            newUser.setLogin(login);
-            newUser.setPassword(password);
+            newUser.setLogin(form.getLogin());
+            newUser.setPassword(form.getPassword());
+            newUser.setEmail(form.getEmail());
             userService.add(newUser);
         } else {
-            return "index";
+            return LOGIN_VIEW;
         }
         return "items";
     }
 
-    @RequestMapping(value = "catalog", method = RequestMethod.GET)
+    @GetMapping(value = "catalog")
     public String viewCategories(Model model) {
         List<Category> categoryList = categoryService.getAll();
         model.addAttribute(ATTRIBUTE_MODEL_TO_VIEW, categoryList);
@@ -63,9 +82,14 @@ public class AppController {
         return "catalog";
     }
 
-    @RequestMapping(value="/catalog/delete/{id}", method=RequestMethod.POST)
+    @PostMapping(value = "/catalog/delete/{id}")
     public String deleteCategory(@PathVariable Integer id) {
         categoryService.delete(categoryService.getById(id));
         return "redirect:/catalog";
+/*        return this.productRepository.findOneById(productId)
+                .map(product -> new ModelAndView("catalog/products/product",
+                        Map.of("product", product), HttpStatus.OK))
+                .orElseGet(() -> new ModelAndView("errors/404",
+                        Map.of("error", "Couldn't find MyAccessDeniedHandler product"), HttpStatus.NOT_FOUND));*/
     }
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Catalog Page</title>
+
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-color: #ccc;
+        }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+
+        .tg .tg-4eph {
+            background-color: #f9f9f9
+        }
+    </style>
+</head>
+<body>
+<a th:href="@{/home.html}">Back to main menu</a>
+
+<br/>
+<br/>
+
+<h1>Item List</h1>
+
+<th:block th:if="${not #lists.isEmpty(itemList)}">
+    <table class="tg">
+        <tr>
+            <th width="80">ID</th>
+            <th width="120">Title</th>
+            <th width="120">Price</th>
+            <th width="60">Edit</th>
+            <th width="60">Delete</th>
+        </tr>
+        <tr th:each="item : ${itemList}">
+            <td><h2 th:utext="${item.id}"></h2></td>
+            <td><a th:href="@{/itemdata/(id=${item.id})}"><h2 th:utext="${item.name}"></h2></a></td>
+            <td><h2 th:utext="${item.unitPrice}"></h2></td>
+            <td><a th:href="@{/edit/(id=${item.id})}">Edit</a></td>
+            <td><a th:href="@{/remove/(id=${item.id})}">Delete</a></td>
+        </tr>
+    </table>
+</th:block>
+
+
+<h1>Add item</h1>
+
+<!--<c:url var="addAction" value="/items/add"/>-->
+
+<form action="/items/add" commandName="item" method="post">
+    <table>
+        <th:block th:if="${item.name !=null}">
+            <tr>
+                <td>
+                    <input id="id" type="hidden" name="ID" readonly="readonly" size="8" disabled="disabled"/>
+                </td>
+            </tr>
+        </th:block>
+        <tr>
+            <td>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="Name"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="unitPrice">Price</label>
+                <input type="number" id="unitPrice" name="Price"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <th:block th:if="${not #lists.isEmpty(item.name)}">
+                    <input type="submit" value="Edit Item"/>
+                </th:block>
+                <th:block th:if="${#lists.isEmpty(item.name)}">
+                    <input type="submit" value="Add Item"/>
+                </th:block>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
