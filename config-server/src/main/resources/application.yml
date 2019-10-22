@@ -1,0 +1,15 @@
+server:
+  port: 8888
+
+#filesystem for storing application configuration information
+spring:
+  profiles:
+    active: native
+
+#This attribute (searchLocations) provides a comma separated list of the directories for each
+#application that's going to have properties managed by the configuration server.
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: file:///programming/projects/PizzaHouse/config-server/src/main/resources/config/web-app
