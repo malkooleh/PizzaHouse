@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.pizzeria.controller.dto.LoginForm;
 import ua.pizzeria.model.Category;
 import ua.pizzeria.model.User;
 import ua.pizzeria.services.CategoryService;
@@ -58,10 +59,14 @@ public class AppController {
     @PostMapping(value = "logout")
     public String signUp(@Valid @ModelAttribute("loginForm") LoginForm form,
                          BindingResult bindingResult) {
-            //@PathVariable String login, @PathVariable String password, @PathVariable String email) {
+        if (bindingResult.hasErrors()) {
+            return LOGIN_VIEW;
+        }
+
         User newUser;
         User profile;
         profile = userService.getByLogin(form.getLogin());
+
         if (profile == null) {
             newUser = new User();
             newUser.setLogin(form.getLogin());
@@ -71,6 +76,7 @@ public class AppController {
         } else {
             return LOGIN_VIEW;
         }
+
         return "items";
     }
 

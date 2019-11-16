@@ -1,0 +1,14 @@
+server:
+  port: 8889
+eureka:
+  client:
+    #Tells Spring not to register itself into the discovery service.
+    register-with-eureka: false
+    #Indicates this instance should not fetch discovery information from the server.
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://localhost:8889
+  #Initial time to wait before server takes requests
+  server:
+    waitTimeInMsWhenSyncEmpty: 5
+    enable-self-preservation: false

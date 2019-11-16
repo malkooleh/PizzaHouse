@@ -13,3 +13,10 @@ spring:
       server:
         native:
           searchLocations: file:///programming/projects/PizzaHouse/config-server/src/main/resources/config/web-app
+
+#use Git as a backend repository
+#        git:
+#          uri: https://github.com/
+#          searchPaths: licensingservice,organizationservice
+#          username: name
+#          password: password
