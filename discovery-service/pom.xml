@@ -10,10 +10,10 @@
     </parent>
 
     <groupId>myProject</groupId>
-    <artifactId>config-server</artifactId>
+    <artifactId>discovery-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>config-server</name>
+    <name>discovery-service</name>
 
     <properties>
         <java.version>11</java.version>
@@ -27,11 +27,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-server</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
 
         <dependency>

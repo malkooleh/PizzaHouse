@@ -1,4 +1,4 @@
-package ua.pizzeria.controller;
+package ua.pizzeria.controller.dto;
 
 import org.hibernate.validator.constraints.Length;
 
