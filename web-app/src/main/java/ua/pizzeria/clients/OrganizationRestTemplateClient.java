@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ua.pizzeria.controller.dto.Organization;
 
+import java.util.List;
+
 @Component
 public class OrganizationRestTemplateClient {
 
@@ -19,6 +21,7 @@ public class OrganizationRestTemplateClient {
 
     //annotation is used to wrapper the getLicenseByOrg() method with a Hystrix circuit breaker.
     @HystrixCommand
+            (fallbackMethod = "buildFallbackOrganizationList")
             //set the maximum timeout(in milliseconds) a Hystrix call will wait before failing to be 12 seconds
 /*            (commandProperties =
                     {@HystrixProperty(
@@ -32,5 +35,15 @@ public class OrganizationRestTemplateClient {
                         null, Organization.class, organizationId);
 
         return restExchange.getBody();
+    }
+
+    private List<Organization> buildFallbackOrganizationList(String organizationId){
+        List<Organization> fallbackList = new ArrayList<>();
+        Organization organization = new Organization();
+        organization.setName("Organization");
+        organization.setContactName("Sorry no Organization information currently available");
+
+        fallbackList.add(organization);
+        return fallbackList;
     }
 }
