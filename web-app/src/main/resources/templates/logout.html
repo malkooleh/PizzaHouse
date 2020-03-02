@@ -14,14 +14,20 @@
         <p>
             <label for="logReg">Login</label>
             <input type="text" id="logReg" name="login" placeholder="Login">
+
+            <span class="error" th:if="${#fields.hasErrors('form.login')}" th:errors="*{form.login}"></span>
         </p>
         <p>
             <label for="passReg">Password</label>
             <input type="password" id="passReg" name='password' placeholder="Password">
+
+            <span class="error" th:if="${#fields.hasErrors('form.password')}" th:errors="*{form.password}"></span>
         </p>
         <p>
             <label for="mailReg">Email</label>
             <input type="text" id="mailReg" name='email' placeholder="Email">
+
+            <span class="error" th:if="${#fields.hasErrors('form.email')}" th:errors="*{form.email}"></span>
         </p>
 
         <p>

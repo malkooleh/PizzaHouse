@@ -1,9 +1,7 @@
 package ua.pizzeria.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.pizzeria.clients.OrganizationDiscoveryClient;
-import ua.pizzeria.clients.OrganizationFeignClient;
 import ua.pizzeria.clients.OrganizationRestTemplateClient;
 import ua.pizzeria.controller.dto.License;
 import ua.pizzeria.controller.dto.Organization;
@@ -11,11 +9,14 @@ import ua.pizzeria.controller.dto.Organization;
 @Service
 public class LicenseService {
 
-    @Autowired
-    OrganizationRestTemplateClient organizationRestClient;
+    private final OrganizationRestTemplateClient organizationRestClient;
 
-    @Autowired
-    OrganizationDiscoveryClient organizationDiscoveryClient;
+    private final OrganizationDiscoveryClient organizationDiscoveryClient;
+
+    public LicenseService(OrganizationRestTemplateClient organizationRestClient, OrganizationDiscoveryClient organizationDiscoveryClient) {
+        this.organizationRestClient = organizationRestClient;
+        this.organizationDiscoveryClient = organizationDiscoveryClient;
+    }
 
 
     private Organization retrieveOrgInfo(String organizationId, String clientType) {
