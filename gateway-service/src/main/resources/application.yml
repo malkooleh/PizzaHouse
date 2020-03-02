@@ -1,0 +1,43 @@
+server:
+  port: 5555
+
+  #Setting logging levels
+logging:
+  level:
+    com.netflix: WARN
+    org.springframework.web: DEBUG
+    com.thoughtmechanix: DEBUG
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: false
+    #Pull down a local copy of the registry.
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8889/eureka/}
+
+#Hystrix timeout for all of the services running through Zuul
+#timeout for specific service - replace the 'default' part
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
+zuul:
+  #  routes:
+  #    organizations:
+  #      path: /v1/organizations/**
+  #      url: http://localhost:8890//v1/organizations
+  routes:
+    organizationservice: /**/organizations/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
