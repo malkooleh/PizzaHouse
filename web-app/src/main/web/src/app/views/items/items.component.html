@@ -1,0 +1,60 @@
+<div class="card">
+  <div class="card-header card-header-warning">
+    <h4 class="card-title">Shopping list</h4>
+    <p class="card-category">New purchases on 15th April, 2020</p>
+  </div>
+  <div class="card-body table-responsive">
+    <table class="table table-hover">
+      <thead class="text-warning">
+      <th>Название</th>
+      <th>Цена</th>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{item.name}}</td>
+        <td>{{item.price}}</td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card-header card-header-warning">
+  <h4 class="card-title"> Список покупок </h4>
+</div>
+<div class="panel">
+  <div class="form-inline">
+    <div class="form-group">
+      <div class="col-md-8">
+        <input class="form-control" [(ngModel)]="name" placeholder="Название"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-6">
+        <input type="number" class="form-control" [(ngModel)]="price" placeholder="Цена"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-8">
+        <button class="btn btn-default" (click)="addItem(name, price)">Добавить</button>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Предмет</th>
+      <th>Цена</th>
+      <th>Куплено</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of items">
+      <td>{{item.name}}</td>
+      <td>{{item.price}}</td>
+      <td><input type="checkbox" [(ngModel)]="item.done"/></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
