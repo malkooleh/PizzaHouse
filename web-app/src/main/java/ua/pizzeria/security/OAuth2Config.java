@@ -27,6 +27,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         clients.inMemory()
                 //the name of the application
                 .withClient("user")
+                // application secret key
                 .secret(passwordEncoder.encode("thisissecret"))
                 .authorizedGrantTypes(
                         "refresh_token",
