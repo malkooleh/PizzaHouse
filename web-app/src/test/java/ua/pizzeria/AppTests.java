@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
+// when the application module is running
 public class AppTests {
     private MockMvc mockMvc;
 
@@ -40,6 +41,6 @@ public class AppTests {
     public void home() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("index"));
+                .andExpect(view().name("login"));
     }
 }

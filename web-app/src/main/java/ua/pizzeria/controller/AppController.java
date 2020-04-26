@@ -1,6 +1,8 @@
 package ua.pizzeria.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,7 +14,11 @@ import ua.pizzeria.services.CategoryService;
 import ua.pizzeria.services.UserService;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+@Slf4j
 
 @Controller
 @RequestMapping("/")
@@ -23,10 +29,13 @@ public class AppController {
     private static final String LOGIN_VIEW = "login";
     private static final String LOGOUT_VIEW = "logout";
 
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private UserService userService;
+    private final CategoryService categoryService;
+    private final UserService userService;
+
+    public AppController(CategoryService categoryService, UserService userService) {
+        this.categoryService = categoryService;
+        this.userService = userService;
+    }
 
     @GetMapping(value = {"", "index"})
     public String index(Model model) {
@@ -35,8 +44,7 @@ public class AppController {
     }
 
     @PostMapping(value = "login")
-    public String signIn(@Valid @ModelAttribute("loginForm") LoginForm form,
-                         BindingResult bindingResult) {
+    public String signIn(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             User profile = userService.getByLogin(form.getLogin());
 
@@ -97,5 +105,22 @@ public class AppController {
                         Map.of("product", product), HttpStatus.OK))
                 .orElseGet(() -> new ModelAndView("errors/404",
                         Map.of("error", "Couldn't find MyAccessDeniedHandler product"), HttpStatus.NOT_FOUND));*/
+    }
+
+    @GetMapping(value = {"/user"}, produces = "application/json")
+    public Map<String, Object> user(OAuth2Authentication user) {
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put(
+                "user",
+                user.getUserAuthentication()
+                        .getPrincipal());
+        userInfo.put(
+                "authorities",
+                AuthorityUtils.authorityListToSet(
+                        user.getUserAuthentication()
+                                .getAuthorities()));
+
+        log.info("User : {}\n Authorities : {}",userInfo.get("user"), userInfo.get("authorities"));
+        return userInfo;
     }
 }
