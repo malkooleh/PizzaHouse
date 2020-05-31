@@ -1,4 +1,4 @@
-package ua.pizzeria.oauth;
+package ua.pizzeria;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -6,10 +6,11 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
-import ua.pizzeria.AppStarter;
+
+import ua.pizzeria.AuthorizationServerApplication;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppStarter.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = AuthorizationServerApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AuthServerIntegrationTest {
 
     @Test

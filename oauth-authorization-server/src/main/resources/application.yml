@@ -1,0 +1,10 @@
+server:
+    servlet:
+        context-path: /spring-security-oauth-server
+    port: 8081
+
+#spring.profiles.active=dev
+
+logging:
+    level:
+        org.springframework.web: DEBUG
