@@ -48,8 +48,8 @@ public class OAuth2AuthorizationServerConfigJwt extends AuthorizationServerConfi
                         "refresh_token",
                         "password",
                         "client_credentials")
-                .scopes("webclient", "mobileclient")
-                .redirectUris("http://localhost:8080/index")
+                .scopes("webclient", "read", "write")
+                .redirectUris("http://localhost:8082/login")
 
                 .and()
                 .withClient("sampleClientId")
