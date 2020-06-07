@@ -24,7 +24,7 @@
         <a href="?lang-ua">ua</a>
     </span>
 
-    <form commandName="user" action="/login" class="login_form" method="post">
+    <form commandName="user" action="/web-app/login" class="login_form" method="post">
         <fieldset>
             <p>
                 <label for="login"></label>
@@ -48,8 +48,14 @@
         <div class="col-md-12 control">
             <div style="border-top: 1px solid#876354; padding-top:15px; font-size:85%">
                 Don't have an account!
-                <form action="/logout" method="get">
+                <form action="/web-app/logout" method="get">
                     <button class="btn btn-md btn-warning btn-block" type="Submit">Go To Registration Page</button>
+                </form>
+            </div>
+
+            <div style="border-top: 1px solid#876354; padding-top:15px; font-size:85%">
+                <form action="/web-app/userInfo" method="get">
+                    <button class="btn btn-md btn-warning btn-block" type="Submit">Go To UserInfo Page</button>
                 </form>
             </div>
         </div>
