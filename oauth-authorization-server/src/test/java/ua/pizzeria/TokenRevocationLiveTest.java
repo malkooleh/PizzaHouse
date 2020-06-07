@@ -27,7 +27,7 @@ public class TokenRevocationLiveTest {
         //Before running this block make sure server on port 8082 is running
         final Response resourceServerResponse = RestAssured.given()
                 .header("Authorization", "Bearer " + accessToken)
-                .get("http://localhost:8082/spring-security-oauth-resource/foos/100");
+                .get("http://localhost:8082/web-app/foos/100");
         assertThat(resourceServerResponse.getStatusCode(), equalTo(200));
     }
 
@@ -43,7 +43,7 @@ public class TokenRevocationLiveTest {
                 .basic(clientId, "secret")
                 .and()
                 .with()
-                .params(params).when().post("http://localhost:8081/spring-security-oauth-server/oauth/token");
+                .params(params).when().post("http://localhost:8081/oauth-server/oauth/token");
     }
 
     private String obtainRefreshToken(String clientId, final String refreshToken) {
@@ -55,7 +55,7 @@ public class TokenRevocationLiveTest {
                 .basic(clientId, "secret")
                 .and()
                 .with()
-                .params(params).when().post("http://localhost:8081/spring-security-oauth-server/oauth/token");
+                .params(params).when().post("http://localhost:8081/oauth-server/oauth/token");
         return response.jsonPath().getString("access_token");
     }
 
@@ -68,6 +68,6 @@ public class TokenRevocationLiveTest {
                 .basic(clientId, "secret")
                 .and()
                 .with()
-                .params(params).when().post("http://localhost:8081/spring-security-oauth-server/oauth/authorize");
+                .params(params).when().post("http://localhost:8081/oauth-server/oauth/authorize");
     }
 }
