@@ -1,6 +1,7 @@
 package ua.pizzeria.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ import java.util.Map;
 @Slf4j
 
 @Controller
-@RequestMapping("/")
+//@RequestMapping("/")
 public class AppController {
 
     private static final String ATTRIBUTE_MODEL_TO_VIEW = "categoryList";
@@ -43,6 +44,7 @@ public class AppController {
         return LOGIN_VIEW;
     }
 
+//    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
     @PostMapping(value = "login")
     public String signIn(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
@@ -58,6 +60,7 @@ public class AppController {
         return "home";
     }
 
+//    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
     @GetMapping("logout")
     public String showSignUp(Model model) {
         model.addAttribute("form", new LoginForm());
@@ -88,6 +91,7 @@ public class AppController {
         return "items";
     }
 
+//    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
     @GetMapping(value = "catalog")
     public String viewCategories(Model model) {
         List<Category> categoryList = categoryService.getAll();
@@ -96,6 +100,7 @@ public class AppController {
         return "catalog";
     }
 
+//    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/catalog/delete/{id}")
     public String deleteCategory(@PathVariable Integer id) {
         categoryService.delete(categoryService.getById(id));
@@ -107,6 +112,7 @@ public class AppController {
                         Map.of("error", "Couldn't find MyAccessDeniedHandler product"), HttpStatus.NOT_FOUND));*/
     }
 
+//    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read') and hasRole('ROLE_ADMIN')")
     @GetMapping(value = {"/user"}, produces = "application/json")
     public Map<String, Object> user(OAuth2Authentication user) {
         Map<String, Object> userInfo = new HashMap<>();
@@ -120,7 +126,22 @@ public class AppController {
                         user.getUserAuthentication()
                                 .getAuthorities()));
 
-        log.info("User : {}\n Authorities : {}",userInfo.get("user"), userInfo.get("authorities"));
+        log.info("User : {}\n Authorities : {}", userInfo.get("user"), userInfo.get("authorities"));
         return userInfo;
+    }
+
+//    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read') and hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "userByName", produces = "application/json")
+    @ResponseBody
+    public User getUser() {
+
+        String userName = "user";
+        return userService.getByLogin(userName);
+    }
+
+//    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read') and hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "userInfo")
+    public String viewUserInfo(Model model) {
+        return "user";
     }
 }

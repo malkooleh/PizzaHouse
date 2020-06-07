@@ -1,5 +1,6 @@
 package ua.pizzeria.controller.products;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -17,6 +18,7 @@ public class ItemsController {
         this.itemService = itemService;
     }
 
+    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
     @GetMapping(value = "items")
     public String viewItems(Model model) {
 
@@ -26,6 +28,7 @@ public class ItemsController {
         return ITEMS_VIEW;
     }
 
+    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
     @GetMapping(value = "items/{id}")
     public String viewItems(@PathVariable Integer id, Model model) {
 
@@ -35,6 +38,7 @@ public class ItemsController {
         return ITEMS_VIEW;
     }
 
+    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
     @PostMapping(value = "items/add", produces = "text/html;charset=UTF-8")
     public String addItem(@ModelAttribute("item") Item item) {
 
@@ -48,6 +52,7 @@ public class ItemsController {
         return ITEMS_VIEW;
     }
 
+    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
     @DeleteMapping("/remove/{id}")
     public String removeBook(@PathVariable("id") Integer id) {
         this.itemService.delete(itemService.getById(id));
@@ -55,6 +60,7 @@ public class ItemsController {
         return "redirect:/items";
     }
 
+    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
     @PutMapping("edit/{id}")
     public String editBook(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("item", this.itemService.getById(id));
@@ -63,6 +69,7 @@ public class ItemsController {
         return ITEMS_VIEW;
     }
 
+    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
     @GetMapping("itemdata/{id}")
     public String bookData(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("item", this.itemService.getById(id));

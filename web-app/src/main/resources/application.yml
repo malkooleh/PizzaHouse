@@ -1,7 +1,7 @@
 server:
   servlet:
-    context-path: /
-  port: 8080
+    context-path: /web-app
+  port: 8082
 
 #Register the IP of the service rather than the server name.
 eureka:
@@ -41,3 +41,8 @@ eureka:
 #    key-pair-password: changeme
 #
 #    public-key: classpath:public.txt
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:8081/oauth-server/user
+      preferTokenInfo: false
