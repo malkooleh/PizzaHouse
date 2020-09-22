@@ -1,7 +1,6 @@
 package ua.pizzeria.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
@@ -9,10 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.pizzeria.controller.dto.LoginForm;
-import ua.pizzeria.model.Category;
-import ua.pizzeria.model.User;
-import ua.pizzeria.services.CategoryService;
-import ua.pizzeria.services.UserService;
+import ua.pizzeria.database.model.Category;
+import ua.pizzeria.database.model.User;
+import ua.pizzeria.database.services.CategoryService;
+import ua.pizzeria.database.services.UserService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -22,7 +21,6 @@ import java.util.Map;
 @Slf4j
 
 @Controller
-//@RequestMapping("/")
 public class AppController {
 
     private static final String ATTRIBUTE_MODEL_TO_VIEW = "categoryList";

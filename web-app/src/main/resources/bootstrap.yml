@@ -2,7 +2,8 @@ spring:
   application:
     name: web-app
   profiles:
-    active: default
+#    active: @spring.profiles.active@
+    active: dev
   cloud:
     config:
       uri: http://localhost:8888

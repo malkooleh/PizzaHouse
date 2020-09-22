@@ -1,79 +1,74 @@
 package ua.pizzeria.controller.products;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.pizzeria.model.Item;
-import ua.pizzeria.services.ItemService;
+import ua.pizzeria.database.model.Item;
+import ua.pizzeria.database.services.ItemService;
 
-@Controller
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+@Slf4j
+@RestController
+@RequestMapping
 public class ItemsController {
 
-    private static final String ITEMS_VIEW = "items";
     private final ItemService itemService;
 
     public ItemsController(ItemService itemService) {
         this.itemService = itemService;
     }
 
-    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
-    @GetMapping(value = "items")
-    public String viewItems(Model model) {
-
-        model.addAttribute("item", new Item());
-        model.addAttribute("itemList", itemService.getAll());
-
-        return ITEMS_VIEW;
+    //    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
+    @GetMapping(value = "/items")
+    public Collection<Item> getItems() {
+        return itemService.getAll();
     }
 
-    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
-    @GetMapping(value = "items/{id}")
-    public String viewItems(@PathVariable Integer id, Model model) {
-
-        model.addAttribute("item", new Item());
-        model.addAttribute("itemList", itemService.getByCategoryID(id));
-
-        return ITEMS_VIEW;
+    //    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
+    @GetMapping(value = "/items/{id}")
+    public ResponseEntity<Item> getItem(@PathVariable Integer id) {
+        Optional<Item> item = itemService.getById(id);
+        return item.map(response -> ResponseEntity.ok().body(response))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
-    @PostMapping(value = "items/add", produces = "text/html;charset=UTF-8")
-    public String addItem(@ModelAttribute("item") Item item) {
-
-        if (StringUtils.isEmpty(item)) {
-            return "/catalog";
-        } else if (!StringUtils.isEmpty(item.getName())) {
-            this.itemService.add(item);
-        } else {
-            this.itemService.update(item);
-        }
-        return ITEMS_VIEW;
+    @GetMapping(value = "/items/byCategory/{categoryId}")
+    public ResponseEntity<?> getItemsByCategory(@PathVariable Integer categoryId) {
+        List<Item> itemList = itemService.getByCategoryID(categoryId);
+        return ResponseEntity.ok(itemList);
     }
 
-    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
+    //    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/items/add")
+    public ResponseEntity<Item> addItem(@RequestBody Item item) throws URISyntaxException {
+        log.info("Request to create item: {}", item);
+
+        Item result = itemService.update(item);
+        return ResponseEntity.created(new URI("/edit/" + result.getId()))
+                .body(result);
+    }
+
+    //    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
     @DeleteMapping("/remove/{id}")
-    public String removeBook(@PathVariable("id") Integer id) {
-        this.itemService.delete(itemService.getById(id));
+    public ResponseEntity<?> removeItem(@PathVariable Integer id) {
+        log.info("Request to delete item: {}", id);
 
-        return "redirect:/items";
+        itemService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
-    @PutMapping("edit/{id}")
-    public String editBook(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("item", this.itemService.getById(id));
-        model.addAttribute("listItems", this.itemService.getAll());
+    //    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('write') and hasRole('ROLE_ADMIN')")
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Item> updateItem(@RequestBody Item item) {
+        log.info("Request to update item: {}", item);
 
-        return ITEMS_VIEW;
-    }
-
-    @PreAuthorize("#oauth2.hasScope('webclient') and #oauth2.hasScope('read')")
-    @GetMapping("itemdata/{id}")
-    public String bookData(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("item", this.itemService.getById(id));
-
-        return "itemdata";
+        Item result = itemService.update(item);
+        return ResponseEntity.ok().body(result);
     }
 }
