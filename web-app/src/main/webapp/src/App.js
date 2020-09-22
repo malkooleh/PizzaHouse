@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import CategoryList from './component/CategoryList'
+import ItemList from "./component/ItemList";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+    state = {
+        selectedCategory: 1,
+        error: false
+    };
+
+    componentDidCatch(error, errorInfo) {
+        this.state = ({
+            error: true
+        })
+    }
+
+    onCategorySelected = (id) => {
+        this.setState({selectedCategory: id})
+    };
+
+    render() {
+
+        if (this.state.error) {
+            return <div>Something happened wrong. Please try again later</div>
+        }
+
+        return (
+            <div>
+                <CategoryList onCategorySelected={this.onCategorySelected}/>
+                <ItemList categoryId={this.state.selectedCategory}/>
+            </div>
+        );
+    }
 }
 
 export default App;

@@ -25,10 +25,10 @@
     </properties>
 
     <modules>
-        <module>dao</module>
         <module>web-app</module>
 <!--        for test-->
         <module>organization-service</module>
+        <module>gateway-service</module>
     </modules>
 
     <dependencies>
@@ -41,8 +41,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -94,6 +92,12 @@
             <version>2.2.11</version>
         </dependency>
         <!-- for java version 9+ -->
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0.1</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
