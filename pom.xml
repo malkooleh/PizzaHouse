@@ -26,9 +26,10 @@
 
     <modules>
         <module>web-app</module>
-<!--        for test-->
-        <module>organization-service</module>
         <module>gateway-service</module>
+        <module>config-server</module>
+        <module>discovery-service</module>
+        <module>oauth-authorization-server</module>
     </modules>
 
     <dependencies>
