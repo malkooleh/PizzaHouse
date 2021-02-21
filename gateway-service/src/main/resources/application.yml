@@ -9,14 +9,44 @@ logging:
     com.thoughtmechanix: DEBUG
 
 eureka:
-  instance:
-    prefer-ip-address: true
+  #  instance:
+  #    prefer-ip-address: true
   client:
-    register-with-eureka: false
+    register-with-eureka: true
     #Pull down a local copy of the registry.
     fetch-registry: true
     service-url:
-      defaultZone: ${EUREKA_SERVER:http://localhost:8889/eureka/}
+      defaultZone: ${discovery-server:http://localhost:8889/eureka/}
+  instance:
+    hostname: localhost
+
+spring:
+  application:
+    name: gateway-service
+  profiles:
+    active:
+      default
+  cloud:
+    gateway:
+      routes:
+        - id: web-app
+          uri: lb://web-app
+          predicates:
+            - Path=/web-app/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: web-app
+                fallbackuri: forward:/webAppServiceFallBack
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: user-service
+                fallbackUri: forward:/userServiceFallBack
 
 #Hystrix timeout for all of the services running through Zuul
 #timeout for specific service - replace the 'default' part
@@ -28,16 +58,10 @@ hystrix:
           thread:
             timeoutInMilliseconds: 10000
 
-zuul:
-  #  routes:
-  #    organizations:
-  #      path: /v1/organizations/**
-  #      url: http://localhost:8890//v1/organizations
-  routes:
-    organizationservice: /**/organizations/**
-
+# for Spring Boot Actuator endpoint /beans
 management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: hystrix.stream
+#        include: '*'

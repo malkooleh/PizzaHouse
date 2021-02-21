@@ -5,14 +5,16 @@ server:
 spring:
   profiles:
     active: native
+  application:
+    name: config-server
 
-#This attribute (searchLocations) provides a comma separated list of the directories for each
-#application that's going to have properties managed by the configuration server.
+  #This attribute (searchLocations) provides a comma separated list of the directories for each
+  #application that's going to have properties managed by the configuration server.
   cloud:
     config:
       server:
         native:
-          searchLocations: file:///programming/projects/PizzaHouse/config-server/src/main/resources/config/web-app
+          search-locations: file:///programming/projects/PizzaHouse/config-server/src/main/resources/config/web-app
 
 #use Git as a backend repository
 #        git:
@@ -20,3 +22,15 @@ spring:
 #          searchPaths: licensingservice,organizationservice
 #          username: name
 #          password: password
+
+eureka:
+  #  instance:
+  #    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    #Pull down a local copy of the registry.
+    fetch-registry: true
+    service-url:
+      defaultZone: ${discovery-server:http://localhost:8889/eureka/}
+  instance:
+    hostname: localhost
