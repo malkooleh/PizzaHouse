@@ -1,0 +1,22 @@
+server:
+  port: 8890
+
+spring:
+  application:
+    name: hystrix-dashboard
+
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"
+
+eureka:
+#  instance:
+#    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    #Pull down a local copy of the registry.
+    fetch-registry: true
+    service-url:
+      defaultZone: ${discovery-server:http://localhost:8889/eureka/}
+  instance:
+    hostname: localhost
